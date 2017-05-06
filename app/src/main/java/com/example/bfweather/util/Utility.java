@@ -1,10 +1,15 @@
 package com.example.bfweather.util;
 
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.example.bfweather.MainActivity;
+import com.example.bfweather.WeatherActivity;
 import com.example.bfweather.db.City;
 import com.example.bfweather.db.County;
 import com.example.bfweather.db.Province;
+import com.example.bfweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,5 +78,17 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    public static Weather handleWeatherResponse(String response){
+        try{
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather5");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
